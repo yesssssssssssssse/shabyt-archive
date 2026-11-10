@@ -118,7 +118,7 @@ footer small{display:block;width:100%;color:var(--muted);font-size:13px}
 </head>
 <body>
 <div id="app"></div>
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Видео"><div class="box"><div class="row"><span id="mtitle"></span><button class="x" id="mclose" aria-label="Жабу">×</button></div><video id="mvideo" controls playsinline preload="none"></video></div></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Видео"><div class="box"><div class="row"><span id="mtitle"></span><span style="display:flex;align-items:center;gap:10px"><a class="btn sm" id="mdl" href="#" download hidden></a><button class="x" id="mclose" aria-label="Жабу">×</button></span></div><video id="mvideo" controls controlslist="nodownload" playsinline preload="none"></video></div></div>
 
 <script>
 /* ============ НАСТРОЙКИ ============ */
@@ -265,7 +265,7 @@ document.addEventListener("click", function(ev){
     var e = EVENTS.filter(function(x){ return x.id === (location.hash || "").slice(1); })[0]; if (!e) return;
     var file = e.files[+v.getAttribute("data-i")], u = webUrl(e, file); if (!u) return;
     var m = document.getElementById("modal"), vid = document.getElementById("mvideo");
-    document.getElementById("mtitle").textContent = file.v; vid.poster = posterUrl(e, file); vid.src = u; m.classList.add("on");
+    document.getElementById("mtitle").textContent = file.v; vid.poster = posterUrl(e, file); vid.src = u; var dl = document.getElementById("mdl"); dl.href = origUrl(e, file); dl.setAttribute("download", file.v); dl.innerHTML = ICON_DL + esc(t().dl); dl.hidden = false; m.classList.add("on");
     var pr = vid.play(); if (pr && pr.catch) pr.catch(function(){});
   }
 });
