@@ -130,7 +130,7 @@ footer small{display:block;width:100%;color:var(--muted);font-size:13px}
 </head>
 <body>
 <div id="app"></div>
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Видео"><div class="box"><div class="row"><span id="mtitle"></span><span style="display:flex;align-items:center;gap:10px"><a class="btn sm" id="mdl" href="#" download hidden></a><button class="x" id="mclose" aria-label="Жабу">×</button></span></div><video id="mvideo" controls controlslist="nodownload" playsinline preload="none"></video></div></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Видео"><div class="box"><div class="row"><span id="mtitle"></span><span style="display:flex;align-items:center;gap:10px"><a class="btn sm" id="mdl" href="#" download hidden></a><button class="x" id="mclose" aria-label="Жабу">×</button></span></div><img id="mimg" alt="" hidden style="display:block;width:100%;max-height:78vh;object-fit:contain;border-radius:12px;background:#000"><video id="mvideo" controls controlslist="nodownload" playsinline preload="none"></video></div></div>
 
 <script>
 /* ============ НАСТРОЙКИ ============ */
@@ -155,23 +155,29 @@ function list(ns, folder){ return ns.map(function(n){ var c = "C" + (n < 1000 ? 
 function range(a, b){ var r = []; for (var n = a; n <= b; n++) r.push(n); return r; }
 // Пока нет облегчённой веб-версии, плеер играет оригинал
 function noweb(fs){ fs.forEach(function(f){ f.noweb = true; }); return fs; }
+// Фото: имена файлов как в хранилище (<папка>/orig/<имя>)
+function photos(names, folder){ return names.map(function(n){ return {v: n, id: n.replace(/\.[^.]+$/, ""), folder: folder, photo: true}; }); }
 
 var EVENTS = [
   { id: "event-2", folder: "pablo", year: 2023, date: "07.12.2021 · 10.12.2023", type: "other",
     title: {kk: "Пабло · 7-летие Шабыт · Возвращение Шабыт", ru: "Пабло · 7-летие Шабыт · Возвращение Шабыт"},
     cover: {folder: "pablo", id: "cover"},
-    files: noweb(list(range(1, 62).concat([70]), "pablo")).concat(list([7195, 7197, 7199, 7200, 7201, 7202, 7203, 7204, 7205, 7206, 7207, 7212, 7213, 7216, 7217, 7218], "1"), list([7015, 7016, 7017, 7018, 7019, 7020, 7021, 7022, 7023, 7024, 7025, 7026, 7027, 7028, 7029, 7030, 7031, 7032, 7033, 7034, 7035, 7036, 7037, 7038, 7039, 7040, 7041, 7042, 7043, 7044, 7045, 7046, 7047, 7048, 7049, 7050, 7051, 7052, 7053, 7054, 7055, 7056, 7057, 7058, 7059, 7060, 7061, 7062, 7063, 7064, 7065, 7066, 7067, 7068, 7069, 7070, 7071, 7072, 7073, 7074, 7075, 7076, 7077, 7078, 7079, 7080, 7081, 7082, 7083, 7084, 7085, 7086, 7087, 7088, 7089, 7090, 7091, 7092, 7093, 7094, 7095, 7096, 7097, 7098, 7099, 7100, 7101, 7102, 7103, 7104, 7105, 7106, 7107, 7108, 7109, 7110, 7111, 7112, 7113, 7114, 7115, 7116, 7117, 7118, 7119, 7120, 7121, 7122, 7123, 7124, 7125, 7126, 7127, 7128, 7129, 7130, 7131, 7132, 7133, 7134, 7135, 7136, 7137, 7138, 7139, 7140, 7141, 7142, 7143, 7144, 7145, 7146, 7147, 7148, 7149, 7150, 7151, 7152, 7153, 7154, 7155, 7156, 7157, 7158, 7159, 7160, 7161, 7162, 7163, 7164, 7165, 7166, 7167, 7168, 7169, 7170, 7171, 7172, 7173, 7174, 7175, 7176, 7177, 7178, 7179, 7180, 7181, 7182, 7183, 7184, 7185, 7186, 7187, 7188, 7189, 7190, 7191, 7192, 7193], "1")) }
+    files: noweb(list(range(1, 62).concat([70]), "pablo")).concat(list([7195, 7197, 7199, 7200, 7201, 7202, 7203, 7204, 7205, 7206, 7207, 7212, 7213, 7216, 7217, 7218], "1"), list([7015, 7016, 7017, 7018, 7019, 7020, 7021, 7022, 7023, 7024, 7025, 7026, 7027, 7028, 7029, 7030, 7031, 7032, 7033, 7034, 7035, 7036, 7037, 7038, 7039, 7040, 7041, 7042, 7043, 7044, 7045, 7046, 7047, 7048, 7049, 7050, 7051, 7052, 7053, 7054, 7055, 7056, 7057, 7058, 7059, 7060, 7061, 7062, 7063, 7064, 7065, 7066, 7067, 7068, 7069, 7070, 7071, 7072, 7073, 7074, 7075, 7076, 7077, 7078, 7079, 7080, 7081, 7082, 7083, 7084, 7085, 7086, 7087, 7088, 7089, 7090, 7091, 7092, 7093, 7094, 7095, 7096, 7097, 7098, 7099, 7100, 7101, 7102, 7103, 7104, 7105, 7106, 7107, 7108, 7109, 7110, 7111, 7112, 7113, 7114, 7115, 7116, 7117, 7118, 7119, 7120, 7121, 7122, 7123, 7124, 7125, 7126, 7127, 7128, 7129, 7130, 7131, 7132, 7133, 7134, 7135, 7136, 7137, 7138, 7139, 7140, 7141, 7142, 7143, 7144, 7145, 7146, 7147, 7148, 7149, 7150, 7151, 7152, 7153, 7154, 7155, 7156, 7157, 7158, 7159, 7160, 7161, 7162, 7163, 7164, 7165, 7166, 7167, 7168, 7169, 7170, 7171, 7172, 7173, 7174, 7175, 7176, 7177, 7178, 7179, 7180, 7181, 7182, 7183, 7184, 7185, 7186, 7187, 7188, 7189, 7190, 7191, 7192, 7193], "1")) },
+  { id: "event-2f", folder: "pablo-foto", year: 2023, date: "07.12.2021 · 10.12.2023", type: "other", photo: true,
+    title: {kk: "Пабло · 7-летие Шабыт · Возвращение Шабыт — фото", ru: "Пабло · 7-летие Шабыт · Возвращение Шабыт — фото"},
+    cover: {folder: "pablo-foto", id: "cover"},
+    files: photos(["C0001T01.JPG", "C0002T01.JPG", "C0003T01.JPG", "C0004T01.JPG", "C0005T01.JPG", "C0006T01.JPG", "C0007T01.JPG", "C0008T01.JPG", "C0009T01.JPG", "C0010T01.JPG", "C0011T01.JPG", "C0012T01.JPG", "C0013T01.JPG", "C0014T01.JPG", "C0015T01.JPG", "C0016T01.JPG", "C0017T01.JPG", "C0018T01.JPG", "C0019T01.JPG", "C0020T01.JPG", "C0021T01.JPG", "C0022T01.JPG", "C0023T01.JPG", "C0024T01.JPG", "C0025T01.JPG", "C0026T01.JPG", "C0027T01.JPG", "C0028T01.JPG", "C0029T01.JPG", "C0030T01.JPG", "C0031T01.JPG", "C0032T01.JPG", "C0033T01.JPG", "C0034T01.JPG", "C0035T01.JPG", "C0036T01.JPG", "C0037T01.JPG", "C0038T01.JPG", "C0039T01.JPG", "C0040T01.JPG", "C0041T01.JPG", "C0042T01.JPG", "C0043T01.JPG", "C0044T01.JPG", "C0045T01.JPG", "C0046T01.JPG", "C0047T01.JPG", "C0048T01.JPG", "C0049T01.JPG", "C0050T01.JPG", "C0051T01.JPG", "C0052T01.JPG", "C0053T01.JPG", "C0054T01.JPG", "C0055T01.JPG", "C0056T01.JPG", "C0057T01.JPG", "C0058T01.JPG", "C0059T01.JPG", "C0060T01.JPG", "C0061T01.JPG", "C0062T01.JPG", "C0063T01.JPG", "C0064T01.JPG", "C0065T01.JPG", "C0066T01.JPG", "C0067T01.JPG", "C0068T01.JPG", "C0069T01.JPG", "C0070T01.JPG", "C0071T01.JPG", "C0072T01.JPG"], "pablo-foto") },
 ];
 
 /* ============ ТЕКСТЫ ============ */
 var T = {
  kk: {title:"Іс-шаралар", title2:"архиві", lead:"SHABYT EVENT өткізген іс-шаралар. Әр іс-шара бөлек: видеолар мен файлдар бір жерде.",
-  events:"іс-шара", videos:"видео", files:"файл", all:"Барлығы", search:"Іздеу…", none:"Ештеңе табылмады.", open:"Ашу", back:"Барлық іс-шаралар",
+  events:"іс-шара", videos:"видео", photos:"фото", photosH:"Фотолар", view:"Ашу", files:"файл", all:"Барлығы", search:"Іздеу…", none:"Ештеңе табылмады.", open:"Ашу", back:"Барлық іс-шаралар",
   videosH:"Видеолар", filesH:"Файлдар", dl:"Жүктеу", play:"Көру", soon:"жақында", clip:"Клип", meta:"метадеректер",
   noFiles:"Бұл іс-шараның файлдары жақында қосылады.", noCdn:"Видео ойнатқыш файл қоймасы қосылғаннан кейін жұмыс істейді.",
   nodate:"күні көрсетілмеген", contact:"Тапсырыс беру", types:{concert:"Концерт",toi:"Той",corporate:"Корпоратив",gov:"Мемлекеттік іс-шара",other:"Басқа"}},
  ru: {title:"Архив", title2:"событий", lead:"Мероприятия SHABYT EVENT. Каждое событие отдельно: видео и файлы в одном месте.",
-  events:"событий", videos:"видео", files:"файлов", all:"Все", search:"Поиск…", none:"Ничего не найдено.", open:"Открыть", back:"Все события",
+  events:"событий", videos:"видео", photos:"фото", photosH:"Фото", view:"Открыть", files:"файлов", all:"Все", search:"Поиск…", none:"Ничего не найдено.", open:"Открыть", back:"Все события",
   videosH:"Видео", filesH:"Файлы", dl:"Скачать", play:"Смотреть", soon:"скоро", clip:"Клип", meta:"метаданные",
   noFiles:"Файлы этого события скоро появятся.", noCdn:"Плеер заработает после подключения хранилища файлов.",
   nodate:"дата не указана", contact:"Заказать", types:{concert:"Концерт",toi:"Той",corporate:"Корпоратив",gov:"Госмероприятие",other:"Другое"}}
@@ -185,6 +191,7 @@ try { var sv = sessionStorage.getItem("sh-lang"); if (sv === "ru" || sv === "kk"
 function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
 function t(){ return T[lang]; }
 function vcount(e){ return e.files.length; }
+function unit(e){ return e.photo ? t().photos : t().videos; }
 function asset(e, kind, name, f){ return CDN ? CDN + encodeURIComponent((f && f.folder) || e.folder) + "/" + kind + "/" + encodeURIComponent(name) : ""; }
 function coverUrl(e){ return e.cover ? asset(e, "posters", e.cover.id + ".jpg", e.cover) : ""; }
 function webUrl(e, f){ return f.noweb ? asset(e, "orig", f.v, f) : asset(e, "web", f.id + ".mp4", f); }
@@ -216,7 +223,7 @@ function home(){
   var list = EVENTS.filter(function(e){
     return (filter === "all" || e.type === filter) && (!q || (evTitle(e) + " " + e.date).toLowerCase().indexOf(q.toLowerCase()) >= 0);
   });
-  var totalV = EVENTS.reduce(function(s, e){ return s + vcount(e); }, 0);
+  var totalV = EVENTS.reduce(function(s, e){ return s + (e.photo ? 0 : vcount(e)); }, 0);
   var h = head() + '<main class="wrap play-in"><section class="hero"><h1 class="h">' + esc(tx.title) + ' <span class="red">' + esc(tx.title2) + '</span></h1><p>' + esc(tx.lead) + '</p>' +
     '<div class="stats"><div class="stat"><b>' + EVENTS.length + '</b>' + esc(tx.events) + '</div><div class="stat"><b>' + totalV + '</b>' + esc(tx.videos) + '</div></div></section>';
   h += '<div class="bar">' + types.map(function(k){
@@ -232,7 +239,7 @@ function home(){
     items.forEach(function(e){
       var cv = coverUrl(e);
       h += '<a class="card' + (cv ? ' has-cover wide' : '') + '" href="#' + e.id + '">' + (cv ? '<img class="cover" src="' + cv + '" alt="" loading="lazy" decoding="async">' : '') + '<span class="no">' + esc(e.folder) + '</span><span class="tag">' + esc(tx.types[e.type]) + '</span><h3 class="h">' + esc(evTitle(e)) + '</h3>' +
-        '<div class="meta"><span>' + esc(evDate(e)) + '</span><span>' + vcount(e) + ' ' + esc(tx.videos) + '</span></div><span class="go">' + esc(tx.open) + ' →</span></a>';
+        '<div class="meta"><span>' + esc(evDate(e)) + '</span><span>' + vcount(e) + ' ' + esc(unit(e)) + '</span></div><span class="go">' + esc(tx.open) + ' →</span></a>';
     });
     h += '</div>';
   });
@@ -242,8 +249,15 @@ function home(){
 function eventPage(e){
   var tx = t();
   var h = head() + '<main class="wrap play-in"><a class="back" href="#">← ' + esc(tx.back) + '</a><section class="ehead"><span class="tag">' + esc(tx.types[e.type]) + '</span><h1 class="h">' + esc(evTitle(e)) + '</h1>' +
-    (coverUrl(e) ? '<div class="ecover"><img src="' + coverUrl(e) + '" alt=""><div class="badge"><span>' + esc(evDate(e)) + '</span><span>' + vcount(e) + ' ' + esc(tx.videos) + '</span></div></div>' : '<p>' + esc(evDate(e)) + ' · ' + vcount(e) + ' ' + esc(tx.videos) + '</p>') + (e.desc ? '<p style="margin-top:14px">' + esc(e.desc[lang] || e.desc.kk) + '</p>' : '') + '</section>';
+    (coverUrl(e) ? '<div class="ecover"><img src="' + coverUrl(e) + '" alt=""><div class="badge"><span>' + esc(evDate(e)) + '</span><span>' + vcount(e) + ' ' + esc(unit(e)) + '</span></div></div>' : '<p>' + esc(evDate(e)) + ' · ' + vcount(e) + ' ' + esc(unit(e)) + '</p>') + (e.desc ? '<p style="margin-top:14px">' + esc(e.desc[lang] || e.desc.kk) + '</p>' : '') + '</section>';
   if (!e.files.length) return h + '<p class="note">' + esc(tx.noFiles) + '</p></main>' + foot();
+  if (e.photo) {
+    h += '<section class="sec"><h2 class="h">' + esc(tx.photosH) + '</h2><div class="vgrid">';
+    e.files.forEach(function(f, i){ h += '<button class="vid pho" data-i="' + i + '" aria-label="' + esc(tx.view + ' ' + f.v) + '"><img src="' + origUrl(e, f) + '" alt="" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"><span class="cap"><span>' + esc(tx.photos) + ' ' + (i + 1) + '</span><small>' + esc(f.v) + '</small></span></button>'; });
+    h += '</div></section><section class="sec"><h2 class="h">' + esc(tx.filesH) + '</h2><div class="files">';
+    e.files.forEach(function(f){ h += '<div class="file"><div class="n"><b>' + esc(f.v) + '</b><small>JPG</small></div><div class="a"><a class="btn sm" href="' + origUrl(e, f) + '" download="' + esc(f.v) + '">' + ICON_DL + esc(tx.dl) + '</a></div></div>'; });
+    return h + '</div></section></main>' + foot();
+  }
   h += '<section class="sec"><h2 class="h">' + esc(tx.videosH) + '</h2><div class="vgrid">';
   e.files.forEach(function(f, i){
     var u = posterUrl(e, f);
@@ -274,13 +288,17 @@ document.addEventListener("click", function(ev){
   var f = ev.target.closest("[data-f]"); if (f) { filter = f.getAttribute("data-f"); render(); return; }
   var v = ev.target.closest(".vid"); if (v) {
     var e = EVENTS.filter(function(x){ return x.id === (location.hash || "").slice(1); })[0]; if (!e) return;
-    var file = e.files[+v.getAttribute("data-i")], u = webUrl(e, file); if (!u) return;
+    var file = e.files[+v.getAttribute("data-i")];
+    if (file.photo) { var mi = document.getElementById("mimg"); document.getElementById("mvideo").hidden = true; mi.hidden = false; mi.src = origUrl(e, file);
+      document.getElementById("mtitle").textContent = file.v; var d2 = document.getElementById("mdl"); d2.href = origUrl(e, file); d2.setAttribute("download", file.v); d2.innerHTML = ICON_DL + esc(t().dl); d2.hidden = false; document.getElementById("modal").classList.add("on"); return; }
+    document.getElementById("mimg").hidden = true; document.getElementById("mvideo").hidden = false;
+    var u = webUrl(e, file); if (!u) return;
     var m = document.getElementById("modal"), vid = document.getElementById("mvideo");
     document.getElementById("mtitle").textContent = file.v; vid.poster = posterUrl(e, file); vid.src = u; var dl = document.getElementById("mdl"); dl.href = origUrl(e, file); dl.setAttribute("download", file.v); dl.innerHTML = ICON_DL + esc(t().dl); dl.hidden = false; m.classList.add("on");
     var pr = vid.play(); if (pr && pr.catch) pr.catch(function(){});
   }
 });
-function closeModal(){ var m = document.getElementById("modal"), vid = document.getElementById("mvideo"); vid.pause(); vid.removeAttribute("src"); vid.removeAttribute("poster"); vid.load(); m.classList.remove("on"); }
+function closeModal(){ var m = document.getElementById("modal"), vid = document.getElementById("mvideo"), mi = document.getElementById("mimg"); mi.hidden = true; mi.removeAttribute("src"); vid.pause(); vid.removeAttribute("src"); vid.removeAttribute("poster"); vid.load(); m.classList.remove("on"); }
 document.getElementById("mclose").addEventListener("click", closeModal);
 document.getElementById("modal").addEventListener("click", function(ev){ if (ev.target === this) closeModal(); });
 document.addEventListener("keydown", function(ev){ if (ev.key === "Escape") closeModal(); });
