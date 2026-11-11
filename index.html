@@ -60,6 +60,18 @@ h1,h2,h3,p{margin:0}
 .card .tag{position:relative;align-self:flex-start;padding:6px 12px;border-radius:99px;background:rgba(10,6,8,.55);border:1px solid rgba(255,255,255,.22);font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px}
 .card h3{position:relative;font-size:clamp(34px,5vw,46px);margin-bottom:10px}
 .card .meta{position:relative;display:flex;flex-wrap:wrap;gap:8px 16px;color:var(--gold-hi);font-size:14px;font-weight:700}
+.card.has-cover{background:#120609}
+.card .cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.card.has-cover:hover .cover{transform:scale(1.05)}
+.card.has-cover::before{background:linear-gradient(180deg,rgba(10,6,8,.1) 0%,rgba(10,6,8,.35) 40%,rgba(10,6,8,.92) 100%);mask-image:none}
+.card.has-cover .no{display:none}
+.card.wide{grid-column:1/-1;min-height:min(62vw,520px)}
+.card.wide h3{font-size:clamp(38px,6.4vw,76px);max-width:16ch}
+.ecover{position:relative;margin-top:14px;border-radius:var(--r);overflow:hidden;aspect-ratio:21/9;min-height:220px;border:1px solid rgba(255,255,255,.18);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.ecover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ecover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(10,6,8,.85))}
+.ecover .badge{position:absolute;z-index:2;left:20px;bottom:18px;display:flex;flex-wrap:wrap;gap:8px}
+.ecover .badge span{padding:7px 14px;border-radius:99px;background:rgba(10,6,8,.6);border:1px solid rgba(255,255,255,.25);font-weight:700;font-size:13px;color:var(--gold-hi);backdrop-filter:blur(8px)}
 .card .go{position:relative;margin-top:16px;display:inline-flex;align-items:center;gap:8px;color:var(--gold);font-weight:700}
 .empty{padding:40px 0;color:var(--muted)}
 
@@ -139,19 +151,20 @@ var CONTACT = {
    folder — имя папки с файлами в хранилище; files — список имён файлов.
    type: concert | toi | corporate | gov | other                          */
 function clips(a, b){ var r = []; for (var n = a; n <= b; n++) r.push(n); return list(r); }
-function list(ns){ return ns.map(function(n){ var c = "C" + (n < 1000 ? ("000" + n).slice(-4) : n); return {v: c + ".MP4", x: c + "M01.XML", id: c}; }); }
+function list(ns, folder){ return ns.map(function(n){ var c = "C" + (n < 1000 ? ("000" + n).slice(-4) : n); return {v: c + ".MP4", x: c + "M01.XML", id: c, folder: folder}; }); }
+function range(a, b){ var r = []; for (var n = a; n <= b; n++) r.push(n); return r; }
+// Пока нет облегчённой веб-версии, плеер играет оригинал
+function noweb(fs){ fs.forEach(function(f){ f.noweb = true; }); return fs; }
 
 var EVENTS = [
   { id: "event-1", folder: "1", year: 2021, date: "07.12.2021", type: "other",
     title: {kk: "Іс-шара 1", ru: "Событие 1"},
     desc: {kk: "Камера клиптері: сахна, жарық, көрермен залы.", ru: "Клипы с камеры: сцена, свет, зал."},
     files: list([7015, 7016, 7017, 7018, 7019, 7020, 7021, 7022, 7023, 7024, 7025, 7026, 7027, 7028, 7029, 7030, 7031, 7032, 7033, 7034, 7035, 7036, 7037, 7038, 7039, 7040, 7041, 7042, 7043, 7044, 7045, 7046, 7047, 7048, 7049, 7050, 7051, 7052, 7053, 7054, 7055, 7056, 7057, 7058, 7059, 7060, 7061, 7062, 7063, 7064, 7065, 7066, 7067, 7068, 7069, 7070, 7071, 7072, 7073, 7074, 7075, 7076, 7077, 7078, 7079, 7080, 7081, 7082, 7083, 7084, 7085, 7086, 7087, 7088, 7089, 7090, 7091, 7092, 7093, 7094, 7095, 7096, 7097, 7098, 7099, 7100, 7101, 7102, 7103, 7104, 7105, 7106, 7107, 7108, 7109, 7110, 7111, 7112, 7113, 7114, 7115, 7116, 7117, 7118, 7119, 7120, 7121, 7122, 7123, 7124, 7125, 7126, 7127, 7128, 7129, 7130, 7131, 7132, 7133, 7134, 7135, 7136, 7137, 7138, 7139, 7140, 7141, 7142, 7143, 7144, 7145, 7146, 7147, 7148, 7149, 7150, 7151, 7152, 7153, 7154, 7155, 7156, 7157, 7158, 7159, 7160, 7161, 7162, 7163, 7164, 7165, 7166, 7167, 7168, 7169, 7170, 7171, 7172, 7173, 7174, 7175, 7176, 7177, 7178, 7179, 7180, 7181, 7182, 7183, 7184, 7185, 7186, 7187, 7188, 7189, 7190, 7191, 7192, 7193]) },
-  { id: "event-2", folder: "1", year: 2023, date: "10.12.2023", type: "other",
-    title: {kk: "Іс-шара 2", ru: "Событие 2"},
-    files: list([7195, 7197, 7199, 7200, 7201, 7202, 7203, 7204, 7205, 7206, 7207, 7212, 7213, 7216, 7217, 7218]) },
-  { id: "event-3", folder: "2", year: 2023, date: "10–11.12.2023", type: "other",
-    title: {kk: "Іс-шара 3", ru: "Событие 3"},
-    files: list([24]) }
+  { id: "event-2", folder: "pablo", year: 2023, date: "10.12.2023", type: "other",
+    title: {kk: "Пабло · 7-летие Шабыт · Возвращение Шабыт", ru: "Пабло · 7-летие Шабыт · Возвращение Шабыт"},
+    cover: {folder: "pablo", id: "cover"},
+    files: noweb(list(range(1, 61), "pablo")).concat(list([7195, 7197, 7199, 7200, 7201, 7202, 7203, 7204, 7205, 7206, 7207, 7212, 7213, 7216, 7217, 7218], "1")) }
 ];
 
 /* ============ ТЕКСТЫ ============ */
@@ -176,10 +189,11 @@ try { var sv = sessionStorage.getItem("sh-lang"); if (sv === "ru" || sv === "kk"
 function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
 function t(){ return T[lang]; }
 function vcount(e){ return e.files.length; }
-function asset(e, kind, name){ return CDN ? CDN + encodeURIComponent(e.folder) + "/" + kind + "/" + encodeURIComponent(name) : ""; }
-function webUrl(e, f){ return asset(e, "web", f.id + ".mp4"); }
-function posterUrl(e, f){ return asset(e, "posters", f.id + ".jpg"); }
-function origUrl(e, f){ return asset(e, "orig", f.v); }
+function asset(e, kind, name, f){ return CDN ? CDN + encodeURIComponent((f && f.folder) || e.folder) + "/" + kind + "/" + encodeURIComponent(name) : ""; }
+function coverUrl(e){ return e.cover ? asset(e, "posters", e.cover.id + ".jpg", e.cover) : ""; }
+function webUrl(e, f){ return f.noweb ? asset(e, "orig", f.v, f) : asset(e, "web", f.id + ".mp4", f); }
+function posterUrl(e, f){ return asset(e, "posters", f.id + ".jpg", f); }
+function origUrl(e, f){ return asset(e, "orig", f.v, f); }
 function url(e, f){ return webUrl(e, f); }
 var ICON_PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>';
 var ICON_DL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16"/></svg>';
@@ -220,7 +234,8 @@ function home(){
     var items = list.filter(function(e){ return e.year === y; });
     h += '<div class="year"><h2 class="h">' + y + '</h2><span>' + items.length + ' ' + esc(tx.events) + '</span></div><div class="grid">';
     items.forEach(function(e){
-      h += '<a class="card" href="#' + e.id + '"><span class="no">' + esc(e.folder) + '</span><span class="tag">' + esc(tx.types[e.type]) + '</span><h3 class="h">' + esc(evTitle(e)) + '</h3>' +
+      var cv = coverUrl(e);
+      h += '<a class="card' + (cv ? ' has-cover wide' : '') + '" href="#' + e.id + '">' + (cv ? '<img class="cover" src="' + cv + '" alt="" loading="lazy" decoding="async">' : '') + '<span class="no">' + esc(e.folder) + '</span><span class="tag">' + esc(tx.types[e.type]) + '</span><h3 class="h">' + esc(evTitle(e)) + '</h3>' +
         '<div class="meta"><span>' + esc(evDate(e)) + '</span><span>' + vcount(e) + ' ' + esc(tx.videos) + '</span></div><span class="go">' + esc(tx.open) + ' →</span></a>';
     });
     h += '</div>';
@@ -231,7 +246,7 @@ function home(){
 function eventPage(e){
   var tx = t();
   var h = head() + '<main class="wrap play-in"><a class="back" href="#">← ' + esc(tx.back) + '</a><section class="ehead"><span class="tag">' + esc(tx.types[e.type]) + '</span><h1 class="h">' + esc(evTitle(e)) + '</h1>' +
-    '<p>' + esc(evDate(e)) + ' · ' + vcount(e) + ' ' + esc(tx.videos) + '</p>' + (e.desc ? '<p style="margin-top:8px">' + esc(e.desc[lang] || e.desc.kk) + '</p>' : '') + '</section>';
+    (coverUrl(e) ? '<div class="ecover"><img src="' + coverUrl(e) + '" alt=""><div class="badge"><span>' + esc(evDate(e)) + '</span><span>' + vcount(e) + ' ' + esc(tx.videos) + '</span></div></div>' : '<p>' + esc(evDate(e)) + ' · ' + vcount(e) + ' ' + esc(tx.videos) + '</p>') + (e.desc ? '<p style="margin-top:14px">' + esc(e.desc[lang] || e.desc.kk) + '</p>' : '') + '</section>';
   if (!e.files.length) return h + '<p class="note">' + esc(tx.noFiles) + '</p></main>' + foot();
   h += '<section class="sec"><h2 class="h">' + esc(tx.videosH) + '</h2><div class="vgrid">';
   e.files.forEach(function(f, i){
