@@ -270,7 +270,7 @@ function eventPage(e){
   h += '</div>' + (CDN ? '' : '<p class="note">' + esc(tx.noCdn) + '</p>') + '</section>';
   h += '<section class="sec"><h2 class="h">' + esc(tx.filesH) + '</h2><div class="files">';
   e.files.forEach(function(f){
-    h += '<div class="file"><div class="n"><b>' + esc(f.v) + '</b><small>MP4 · ' + esc(f.x) + ' (' + esc(tx.meta) + ')</small></div><div class="a">' +
+    h += '<div class="file"><div class="n"><b>' + esc(f.v) + '</b><small>' + esc((f.v.split('.').pop() || 'MP4').toUpperCase()) + (f.x ? ' · ' + esc(f.x) + ' (' + esc(tx.meta) + ')' : '') + '</small></div><div class="a">' +
       (CDN ? '<a class="btn sm" href="' + origUrl(e, f) + '" download="' + esc(f.v) + '">' + ICON_DL + esc(tx.dl) + '</a>' : '<span class="soon" style="position:static">' + esc(tx.soon) + '</span>') + '</div></div>';
   });
   return h + '</div></section></main>' + foot();
