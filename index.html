@@ -155,7 +155,7 @@ function list(ns, folder){ return ns.map(function(n){ var c = "C" + (n < 1000 ? 
 function range(a, b){ var r = []; for (var n = a; n <= b; n++) r.push(n); return r; }
 // Пока нет облегчённой веб-версии, плеер играет оригинал
 // Клипы с готовой веб-версией (папка/имя); остальные играют оригинал
-var HASWEB = {/*HASWEB*/};
+var HASWEB = {/*HASWEB*/"hab/yandex_otkrytie":1};
 function noweb(fs){ fs.forEach(function(f){ if (!HASWEB[f.folder + "/" + f.id]) f.noweb = true; }); return fs; }
 // Фото: имена файлов как в хранилище (<папка>/orig/<имя>)
 function photos(names, folder){ return names.map(function(n){ return {v: n, id: n.replace(/\.[^.]+$/, ""), folder: folder, photo: true}; }); }
@@ -164,7 +164,7 @@ var EVENTS = [
   { id: "event-5", folder: "hab", year: 2026, date: "28.05.2026", type: "corporate",
     title: {"kk": "Еуразиялық логистикалық хаб · Орал", "ru": "Евразийский логистический хаб · Уральск"},
     cover: {folder: "hab", id: "cover"},
-    files: noweb([{"v": "youtube_otkrytie.MP4", "x": "", "id": "youtube_otkrytie", "folder": "hab"}, {"v": "wa_video_01.MP4", "x": "", "id": "wa_video_01", "folder": "hab"}, {"v": "wa_video_02.MP4", "x": "", "id": "wa_video_02", "folder": "hab"}, {"v": "wa_video_03.MP4", "x": "", "id": "wa_video_03", "folder": "hab"}, {"v": "wa_video_04.MP4", "x": "", "id": "wa_video_04", "folder": "hab"}, {"v": "wa_video_05.MP4", "x": "", "id": "wa_video_05", "folder": "hab"}, {"v": "wa_video_06.MP4", "x": "", "id": "wa_video_06", "folder": "hab"}, {"v": "wa_video_07.MP4", "x": "", "id": "wa_video_07", "folder": "hab"}]) },
+    files: noweb([{"v": "yandex_otkrytie.MP4", "x": "", "id": "yandex_otkrytie", "folder": "hab"}, {"v": "youtube_otkrytie.MP4", "x": "", "id": "youtube_otkrytie", "folder": "hab"}, {"v": "wa_video_01.MP4", "x": "", "id": "wa_video_01", "folder": "hab"}, {"v": "wa_video_02.MP4", "x": "", "id": "wa_video_02", "folder": "hab"}, {"v": "wa_video_03.MP4", "x": "", "id": "wa_video_03", "folder": "hab"}, {"v": "wa_video_04.MP4", "x": "", "id": "wa_video_04", "folder": "hab"}, {"v": "wa_video_05.MP4", "x": "", "id": "wa_video_05", "folder": "hab"}, {"v": "wa_video_06.MP4", "x": "", "id": "wa_video_06", "folder": "hab"}, {"v": "wa_video_07.MP4", "x": "", "id": "wa_video_07", "folder": "hab"}]) },
   { id: "event-5f", folder: "hab-foto", year: 2026, date: "28.05.2026", type: "corporate", photo: true,
     title: {"kk": "Еуразиялық логистикалық хаб · Орал — фото", "ru": "Евразийский логистический хаб · Уральск — фото"},
     cover: {folder: "hab-foto", id: "cover"},
